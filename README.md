@@ -24,6 +24,27 @@ pytorch-project/
 - Set up proper Python path and working directory
 - No volume mounts for dependencies (everything baked in)
 
+**What it does:**
+- Uses Python 3.11 base image (has Python already)
+- Installs uv
+- Copies your pyproject.toml
+- Installs dependencies with uv
+- Keeps container running so VSCode can connect
+
+**What you need:**
+1. Dockerfile
+2. `pyproject.toml` with just PyTorch CPU
+3. `docker build -t pytorch-cpu .`
+4. `docker run -d pytorch-cpu`
+5. Sanity check by running
+    ```bash
+    docker exec -it <container_id> uv run python -c "import torch; print('PyTorch version:', torch.__version__); x = torch.tensor([1, 2, 3]); print('Tensor:', x); print('Sum:', x.sum().item())"
+    ```
+    replace <container_id> with your container ID which you can find by running `docker ps`
+6. Stop the container with, `docker stop <container_id>`. Or find the ID dynamically with `docker stop $(docker ps -q --filter ancestor=pytorch-cpu)`
+
+Note: This simple setup has no user management, no optimizations, no verification - just the absolute minimum to get PyTorch running in a container that VSCode can connect to.
+
 ## VSCode Integration
 
 **Dev Containers extension**:
