@@ -65,6 +65,7 @@ OpenTofu roadmap to get an EC2 instance running:
     tofu -version
     ```
 2. **Install AWS CLI** and configure credentials (`aws configure`)
+    My [guide](https://github.com/francisco-camargo/francisco-camargo/blob/master/src/aws/aws_cli/README.md)
 
 ### Phase 2: Infrastructure Definition
 4. **Create main.tf** - define EC2 instance, security group, key pair
