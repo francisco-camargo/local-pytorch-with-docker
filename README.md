@@ -56,6 +56,14 @@ OpenTofu roadmap to get an EC2 instance running:
 
 ### Phase 1: Local Setup
 1. **Install OpenTofu** on your Windows machine
+    [Guide](https://opentofu.org/docs/intro/install/windows/). Not sure if adding it to PATH helped or not
+    ```powershell
+    winget install --exact --id=OpenTofu.Tofu
+    ```
+    restart the terminal, then it should run in bash and powershell.
+    ```bash
+    tofu -version
+    ```
 2. **Install AWS CLI** and configure credentials (`aws configure`)
 
 ### Phase 2: Infrastructure Definition
