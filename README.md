@@ -41,6 +41,7 @@ pytorch-project/
 3. `docker build -t pytorch-cpu .`
 4. `docker run -d pytorch-cpu`
 5. Sanity check by running
+
    ```bash
    docker exec -it <container_id> uv run python -c "import torch; print('PyTorch version:', torch.__version__); x = torch.tensor([1, 2, 3]); print('Tensor:', x); print('Sum:', x.sum().item())"
    ```
@@ -55,36 +56,71 @@ Note: This simple setup has no user management, no optimizations, no verificatio
 OpenTofu roadmap to get an EC2 instance running:
 
 ### Phase 1: Local Setup
+
 1. **Install OpenTofu** on your Windows machine
-    [Guide](https://opentofu.org/docs/intro/install/windows/). Not sure if adding it to PATH helped or not
-    ```powershell
-    winget install --exact --id=OpenTofu.Tofu
-    ```
-    restart the terminal, then it should run in bash and powershell.
-    ```bash
-    tofu -version
-    ```
-2. **Install AWS CLI** and configure credentials (`aws configure`)
-    My [guide](https://github.com/francisco-camargo/francisco-camargo/blob/master/src/aws/aws_cli/README.md)
+   [Guide](https://opentofu.org/docs/intro/install/windows/). Not sure if adding it to PATH helped or not
+
+   ```powershell
+   winget install --exact --id=OpenTofu.Tofu
+   ```
+
+   restart the terminal, then it should run in bash and powershell.
+
+   ```bash
+   tofu -version
+   ```
+2. **AWS CLI**
+   a. Install AWS CLI, my [guide](https://github.com/francisco-camargo/francisco-camargo/blob/master/src/aws/aws_cli/README.md)
+
+   b. **Get AWS Credentials**
+   - Log into AWS Console
+   - Go to IAM Security Credentials
+   - Create or use existing Access Key ID and Secret Access Key
+
+   c. **Configure AWS CLI**
+   ``bash aws configure ``
+   You'll be prompted for:
+   - AWS Access Key ID
+   - AWS Secret Access Key
+   - Default region (e.g., `us-east-1`)
+   - Default output format (use `json`)
+
+   d. **Verify Configuration**
+   ``bash aws sts get-caller-identity ``
+   This should return your AWS account info.
+
+   e. **Create Provider Configuration**
+   Create a new file `provider.tf`:
+   ``hcl provider "aws" { region = "us-east-1"  # or your preferred region } ``
+
+   f. **Generate SSH Key Pair**
+   ``bash aws ec2 create-key-pair --key-name pytorch-key --query 'KeyMaterial' --output text > pytorch-key.pem ``
+
+   g. **Set Key Permissions** (Windows)
+   ``powershell icacls pytorch-key.pem /inheritance:r icacls pytorch-key.pem /grant:r "%USERNAME%":"(R)" ``
 
 ### Phase 2: Infrastructure Definition
+
 4. **Create main.tf** - define EC2 instance, security group, key pair
 5. **Create variables.tf** - parameterize instance type, region, etc.
 6. **Create outputs.tf** - export instance IP, connection details
 7. **Create terraform.tfvars** - set your specific values
 
 ### Phase 3: AWS Prerequisites
+
 8. **Generate SSH key pair** for connecting to instance
 9. **Verify AWS credentials** have EC2 permissions
 10. **Choose AWS region** and availability zone
 
 ### Phase 4: Deployment
+
 11. **Initialize OpenTofu** (`tofu init`)
 12. **Plan deployment** (`tofu plan`) - preview what will be created
 13. **Apply configuration** (`tofu apply`) - create actual resources
 14. **Test SSH connection** to your new instance
 
 ### Phase 5: Setup Development Environment
+
 15. **SSH into instance** and install Docker
 16. **Clone your PyTorch repo** on the instance
 17. **Configure VSCode SSH** to connect to the instance
