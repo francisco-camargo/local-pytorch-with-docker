@@ -6,4 +6,5 @@ dependencies = [
     "torch",
     "torchvision",
     "numpy",
+    "tqdm",
 ]
