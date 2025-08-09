@@ -28,16 +28,17 @@ The purpose of this repo is to enable the user to quickly run PyTorch code on th
 1. Dockerfile
 2. `pyproject.toml` with just PyTorch CPU
 3. Generate lockfile: `uv lock`
-4. `docker build -t pytorch-cpu .`
+4. `docker build --no-cache -t pytorch-cpu .`
 5. `docker run -d pytorch-cpu`
 6. Sanity check by running:
 
    ```bash
-   docker exec -it <container_id> uv run python -c "import torch; print('PyTorch version:', torch.__version__); x = torch.tensor([1, 2, 3]); print('Tensor:', x); print('Sum:', x.sum().item())"
+   # Using the built-in sanity check script
+   docker exec -it <container_id> uv run python sanity_check.py
    ```
 
    replace <container_id> with your container ID which you can find by running `docker ps`
-6. Stop the container with, `docker stop <container_id>`. Or find the ID dynamically with `docker stop $(docker ps -q --filter ancestor=pytorch-cpu)`
+7. Stop the container with, `docker stop <container_id>`. Or find the ID dynamically with `docker stop $(docker ps -q --filter ancestor=pytorch-cpu)`
 
 Note: This simple setup has no user management, no optimizations, no verification - just the absolute minimum to get PyTorch running in a container that VSCode can connect to.
 
