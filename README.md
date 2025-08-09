@@ -2,46 +2,25 @@
 
 ## Goal
 
-The purpose of this repo is to enable the user to quickly run PyTorch code on their local WIndows machine on CPU using Docker.
+The purpose of this repo is to enable the user to quickly run PyTorch code on their local Windows machine on CPU using Docker.
 
-## Container Strategy
+## Getting Started
 
-**Single Dockerfile approach**:
-
-- Start with Ubuntu base image (no CUDA needed)
-- Install uv inside container
-- Copy pyproject.toml and install CPU PyTorch with `uv sync`
-- Optimize for CPU performance (OpenMP, MKL)
-- Set up proper Python path and working directory
-- No volume mounts for dependencies (everything baked in)
-
-**What it does:**
-
-- Uses Python 3.11 base image (has Python already)
-- Installs uv
-- Copies your pyproject.toml
-- Installs dependencies with uv
-- Keeps container running so VSCode can connect
-
-**What you need:**
-
-1. Dockerfile
-2. `pyproject.toml` with just PyTorch CPU
-3. **Quick rebuild:** `./rebuild.sh` (does steps 4-6 automatically)
+1. **Quick (re)build:** `./rebuild.sh` (does steps 2-5 automatically). If successful you end up with a running container with PyTorch installed
 
    OR manually:
 
-4. Generate lockfile: `uv lock`
-5. `docker build --no-cache -t pytorch-cpu .`
-6. `docker run -d pytorch-cpu`
-7. Sanity check by running:
+2. Generate lockfile: `uv lock`
+3. `docker build --no-cache -t pytorch-cpu .`
+4. `docker run -d pytorch-cpu`
+5. Sanity check by running:
 
    ```bash
    # Using the built-in sanity check script
    docker exec -it <container_id> uv run python sanity_check.py
    ```
 
-8. Train a simple neural network:
+6. Train a simple neural network:
 
    ```bash
    # Train CNN on MNIST dataset
@@ -61,62 +40,3 @@ Note: This simple setup has no user management, no optimizations, no verificatio
 - VSCode attaches to running container
 - Full IntelliSense, debugging, terminal access inside container
 - Extensions (Python, PyTorch snippets) installed in container
-
-## Dependencies (Minimal Set)
-
-**CPU-optimized libraries**:
-
-- PyTorch CPU version + torchvision
-- numpy (with optimized BLAS)
-- matplotlib (basics)
-- tqdm (progress bars)
-- tensorboard (simple logging)
-
-**No Jupyter, no GPU libraries, no heavyweight frameworks initially**
-
-## Development Workflow
-
-1. **Build container** with all dependencies pre-installed
-2. **Start container** (standard Docker, no GPU runtime needed)
-3. **VSCode connects** via Dev Containers extension
-4. **Code directly** in container environment
-5. **Run training** with simple `python scripts/train.py`
-
-## CPU Optimization
-
-**Docker Configuration**:
-
-- Standard Docker Desktop on Windows
-- CPU resource allocation (cores/memory)
-- No special runtime requirements
-- Faster startup than GPU containers
-
-## Minimal Neural Network
-
-**Simple CNN example**:
-
-- Basic PyTorch model (lightweight for CPU)
-- MNIST dataset (smaller, faster on CPU)
-- Reduced batch sizes for CPU efficiency
-- CPU utilization monitoring
-- Threading optimization for Windows containers
-
-## Windows-Specific Considerations
-
-**Docker Desktop**:
-
-- WSL2 backend recommended
-- Memory allocation for container
-- File system performance (avoid bind mounts for dependencies)
-- Port forwarding for any web interfaces
-
-This approach gives you:
-
-- **No GPU dependencies** (works on any Windows machine)
-- **Fast container startup** (no CUDA runtime)
-- **Full VSCode experience** with remote development
-- **CPU-optimized PyTorch** for reasonable performance
-- **Simple setup** on Windows Docker Desktop
-- **Reproducible environment** across any CPU-based machine
-
-The key advantage is simplicity - standard Docker setup with no special hardware requirements, while still maintaining professional development practices.
