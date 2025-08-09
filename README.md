@@ -41,8 +41,15 @@ The purpose of this repo is to enable the user to quickly run PyTorch code on th
    docker exec -it <container_id> uv run python sanity_check.py
    ```
 
+8. Train a simple neural network:
+
+   ```bash
+   # Train CNN on MNIST dataset
+   docker exec -it <container_id> uv run python train_mnist.py
+   ```
+
    replace <container_id> with your container ID which you can find by running `docker ps`
-7. Stop the container with, `docker stop <container_id>`. Or find the ID dynamically with `docker stop $(docker ps -q --filter ancestor=pytorch-cpu)`
+9. Stop the container with, `docker stop <container_id>`. Or find the ID dynamically with `docker stop $(docker ps -q --filter ancestor=pytorch-cpu)`
 
 Note: This simple setup has no user management, no optimizations, no verification - just the absolute minimum to get PyTorch running in a container that VSCode can connect to.
 

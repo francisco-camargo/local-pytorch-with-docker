@@ -11,8 +11,8 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync
 
-# Copy sanity check script
-COPY sanity_check.py ./
+# Copy scripts
+COPY sanity_check.py train_mnist.py ./
 
 # Keep container running for VSCode connection
 CMD ["tail", "-f", "/dev/null"]
