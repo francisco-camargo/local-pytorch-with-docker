@@ -27,10 +27,14 @@ The purpose of this repo is to enable the user to quickly run PyTorch code on th
 
 1. Dockerfile
 2. `pyproject.toml` with just PyTorch CPU
-3. Generate lockfile: `uv lock`
-4. `docker build --no-cache -t pytorch-cpu .`
-5. `docker run -d pytorch-cpu`
-6. Sanity check by running:
+3. **Quick rebuild:** `./rebuild.sh` (does steps 4-6 automatically)
+
+   OR manually:
+
+4. Generate lockfile: `uv lock`
+5. `docker build --no-cache -t pytorch-cpu .`
+6. `docker run -d pytorch-cpu`
+7. Sanity check by running:
 
    ```bash
    # Using the built-in sanity check script
