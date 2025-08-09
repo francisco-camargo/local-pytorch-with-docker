@@ -27,9 +27,10 @@ The purpose of this repo is to enable the user to quickly run PyTorch code on th
 
 1. Dockerfile
 2. `pyproject.toml` with just PyTorch CPU
-3. `docker build -t pytorch-cpu .`
-4. `docker run -d pytorch-cpu`
-5. Sanity check by running
+3. Generate lockfile: `uv lock`
+4. `docker build -t pytorch-cpu .`
+5. `docker run -d pytorch-cpu`
+6. Sanity check by running:
 
    ```bash
    docker exec -it <container_id> uv run python -c "import torch; print('PyTorch version:', torch.__version__); x = torch.tensor([1, 2, 3]); print('Tensor:', x); print('Sum:', x.sum().item())"
