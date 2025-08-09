@@ -6,8 +6,9 @@ echo "🔄 Rebuilding PyTorch container..."
 
 # Step 1: Stop any running containers
 echo "📦 Stopping existing containers..."
-if docker ps -q --filter ancestor=pytorch-cpu | grep -q .; then
-    docker stop $(docker ps -q --filter ancestor=pytorch-cpu)
+RUNNING_CONTAINERS=$(docker ps -q --filter ancestor=pytorch-cpu)
+if [ -n "$RUNNING_CONTAINERS" ]; then
+    docker stop $RUNNING_CONTAINERS
     echo "✅ Stopped existing containers"
 else
     echo "ℹ️  No running containers found"
