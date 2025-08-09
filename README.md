@@ -1,19 +1,8 @@
 # Local PyTorch with Docker
 
-## High-Level Architecture
+## Goal
 
-**Container-First Development**: Everything runs inside Docker with CPU optimization, VSCode connects remotely via Dev Containers extension.
-
-## Project Structure (Minimal)
-
-```
-pytorch-project/
-├── .devcontainer/           # VSCode dev container config
-├── Dockerfile              # Single stage, Ubuntu base + uv + CPU PyTorch
-├── pyproject.toml          # uv project file with CPU PyTorch + essentials
-├── src/                    # Your Python code
-└── scripts/train.py        # Simple training script
-```
+The purpose of this repo is to enable the user to quickly run PyTorch code on their local WIndows machine on CPU using Docker.
 
 ## Container Strategy
 
